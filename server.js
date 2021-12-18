@@ -53,16 +53,16 @@ const setShortUrl = async (req, res) => {
   // console.log("lurl : ",lurl);
   if(validUrl.isWebUri(lurl)) {
     try {
-       let surl = urlModel.countDocuments({});
-    surl+=1;
-    const data = await urlModel.create({longUrl:lurl, shortUrl:surl});
+      let surl = await urlModel.count({});
+      surl+='';
+      //  console.log(surl, typeof(surl));
+    const data = await urlModel.create({longUrl:lurl, shortUrl:surl+''});
     [lurl, surl] = [data.longUrl, data.shortUrl];
     res.json({original_url:lurl, short_url:surl});
     // res.json('sec');
     } catch (err){
-      res.json('serv');
+      res.json({error:err});
     }
-   
   } else {
     res.json({error:"invalid url"});
   }
